@@ -472,7 +472,17 @@ def cmd_open(ensoapi, target):
             except Exception, e:
                 logging.error(e)
         else:
-            os.startfile(file_path)
+            try:
+                os.startfile(file_path)
+            except:
+                """ assume this is a 64-bit application or link; run it through a 64-bit cmd.exe """
+                rcode = win32api.ShellExecute(
+                    0,
+                    'open',
+                    '%s/sysnative/cmd.exe' % shell.SHGetFolderPath(0, shellcon.CSIDL_WINDOWS, 0, 0),
+                    '/c start "x64" "%s"' % file_path,
+                    None,
+                    win32con.SW_SHOWDEFAULT)
 
         return True
     except Exception, e:
