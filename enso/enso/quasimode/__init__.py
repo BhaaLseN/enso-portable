@@ -166,6 +166,10 @@ class Quasimode:
         self.__isModal = config.IS_QUASIMODE_MODAL
 
         self.__eventMgr.setModality( self.__isModal )
+        
+        # pre-initialize the window on startup, since it takes a long time
+        # to show up after the initial quasimode trigger
+        self.__quasimodeWindow = TheQuasimodeWindow()
 
     def setQuasimodeKeyByName( self, function_name, key_name ):
         # Sets the quasimode to use the given key (key_name must be a
