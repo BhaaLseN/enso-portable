@@ -42,7 +42,7 @@
 # ----------------------------------------------------------------------------
 
 from enso import commands
-from enso.commands.suggestions import AutoCompletion
+from enso.commands.suggestions import Suggestion, AutoCompletion
 from enso import config
 
 
@@ -253,13 +253,22 @@ class TheSuggestionList:
         # by nearness, we can simply sort the suggestions in place.
         suggestions.sort()
         suggestions = suggestions[:config.QUASIMODE_MAX_SUGGESTIONS]
+
+        # Cache current autocompletion
+        auto = self.__autoCompletion
         
+        # If no command matches the user text, offer "open <usertext>" variant
+        # as the autocompletion
+        if (not auto.hasCompletion()
+            and config.QUASIMODE_SUGGEST_OPEN_COMMAND_IF_NO_OTHER_MATCH
+            and not userText.startswith("open ")):
+            a = self.__autoComplete("open %s" % userText)
+            if a.hasCompletion():
+                auto = a        
         # Make the auto-completion the 0th suggestion, and not listed
         # more than once.
-        auto = self.__autoCompletion
-        if len( auto.toText() ) > 0:
-            suggestions = [ s for s in suggestions
-                            if not s.toText() == auto.toText() ]
+        suggestions = [ s for s in suggestions
+                        if not s.toText() == auto.toText() ]
         return [ auto ] + suggestions
 
 

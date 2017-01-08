@@ -414,3 +414,6 @@ class AutoCompletion( Suggestion ):
         # so initialize self as a Suggestion.
         
         Suggestion.__init__( self, originalText, suggestedText, helpText )
+
+    def hasCompletion(self):
+        return bool(self.toText())

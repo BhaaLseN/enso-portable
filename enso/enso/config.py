@@ -63,6 +63,10 @@ DEFAULT_PLATFORMS = ["enso.platform.osx",
                      "enso.platform.linux",
                      "enso.platform.win32"]
 
+# Replace suggestion with 'open {query}' command if there is no command matching
+# the {query}
+QUASIMODE_SUGGEST_OPEN_COMMAND_IF_NO_OTHER_MATCH = True
+
 # List of modules/packages that support the provider interface to
 # provide required platform-specific functionality to Enso.
 PROVIDERS = []
